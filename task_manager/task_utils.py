@@ -1,30 +1,20 @@
 from datetime import datetime
-
-# Import validation functions
 from validation import (
     validate_task_title,
     validate_task_description,
     validate_due_date,
 )
 
-# Define tasks list
 tasks = []
 
-# Implement add_task function
+
 def add_task(title, description, due_date):
-    valid_title, title_error = validate_task_title(title)
-    if not valid_title:
-        print(f"Error: {title_error}")
-        return
-
-    valid_description, description_error = validate_task_description(description)
-    if not valid_description:
-        print(f"Error: {description_error}")
-        return
-
-    valid_due_date, due_date_error = validate_due_date(due_date)
-    if not valid_due_date:
-        print(f"Error: {due_date_error}")
+    try:
+        validate_task_title(title)
+        validate_task_description(description)
+        validate_due_date(due_date)
+    except ValueError as e:
+        print(f"Error: {e}")
         return
 
     tasks.append({
@@ -35,7 +25,7 @@ def add_task(title, description, due_date):
     })
     print("Task added successfully!")
 
-# Implement mark_task_as_complete function
+
 def mark_task_as_complete(index, tasks=tasks):
     if index < 0 or index >= len(tasks):
         print("Error: Invalid task index.")
@@ -47,7 +37,7 @@ def mark_task_as_complete(index, tasks=tasks):
         tasks[index]["completed"] = True
         print("Task marked as complete!")
 
-# Implement view_pending_tasks function
+
 def view_pending_tasks(tasks=tasks):
     pending = [t for t in tasks if not t["completed"]]
     if not pending:
@@ -59,7 +49,7 @@ def view_pending_tasks(tasks=tasks):
         print(f"{i}. {t['title']} | Due: {t['due_date']} | {t['description']}")
     return pending
 
-# Implement calculate_progress function
+
 def calculate_progress(tasks=tasks):
     total = len(tasks)
     if total == 0:
